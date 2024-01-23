@@ -1,0 +1,44 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+
+msgid "New years information!"
+msgstr "Новогодняя информация!"
+
+msgid "Hohohooooo "
+msgstr "ХОХОХО "
+
+msgid " ! Your happy man "
+msgstr " ! Ваш счастливый получатель "
+
+msgid " ! Give him a nice gift and spend all your money. ! "
+msgstr " ! Подарите ему хороший подарок и не скупитесь. ! "
+
+msgid "Recipient"
+msgstr "Получатель"
+
+msgid "Full name"
+msgstr "Полное имя"
+
+msgid "Email"
+msgstr "Почта"
+
+msgid "At least 4 rows must be entered"
+msgstr "Как миминум нужно заполнить 4х получателей"
+
+msgid "Secret santa"
+msgstr "Тайный санта"
+
+msgid "Add row"
+msgstr "Добавить получателя"
+
+msgid "Send emails"
+msgstr "Отправить письма"
+
+msgid "Delete row"
+msgstr "Удалить"
+
+msgid "Messages send"
+msgstr "Сообщения отправлены"

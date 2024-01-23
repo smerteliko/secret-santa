@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+
+    <style>
+    </style>
+
+<form id="persons">
+    <h3  class="ms-1">{{ 'Secret santa'|trans}}</h3>
+    <div class="row ms-1">
+        <div class="col-6 mt-3" id="personContainer">
+            <div class="row col-11" id="personRow1">
+                <label> {{ 'Recipient'|trans }} 1 </label>
+                <div class="input-group input-group-sm ">
+
+                    <div class="form-floating">
+                        <input id="personRow1Name" type="text" class="form-control" placeholder="{{ 'Full name'|trans }}" >
+                        <label for="personRow1Name">{{ 'Full name'|trans }}</label>
+                    </div>
+                    <div class="form-floating">
+                        <input id="personRow1Email" type="email" class="form-control" placeholder="Email:" >
+                        <label for="personRow1Email">{{ 'Email'|trans }}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-11" id="personRow2">
+                <label> {{ 'Recipient'|trans }} 2 </label>
+                <div class="input-group  mb-3">
+                    <div class="form-floating">
+                        <input id="personRow2Name" type="text" class="form-control" placeholder="{{ 'Full name'|trans }}" >
+                        <label for="personRow2Name">{{ 'Full name'|trans }}</label>
+                    </div>
+                    <div class="form-floating">
+                        <input id="personRow2Email" type="email" class="form-control" placeholder="{{ 'Email'|trans }}:">
+                        <label for="personRow2Email">{{ 'Email'|trans }}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-11" id="personRow3">
+                <label> {{ 'Recipient'|trans }} 3 </label>
+                <div class="input-group input-group-sm mb-3">
+                    <div class="form-floating">
+                        <input id="personRow3Name" type="text" class="form-control" placeholder="{{ 'Full name'|trans }}" >
+                        <label for="personRow3Name">{{ 'Full name'|trans }}</label>
+                    </div>
+                    <div class="form-floating">
+                        <input id="personRow3Email" type="email" class="form-control"  placeholder="{{ 'Email'|trans }}:">
+                        <label for="personRow3Email">{{ 'Email'|trans }}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row col-11" id="personRow4">
+                <label> {{ 'Recipient'|trans }} 4 </label>
+                <div class="input-group input-group-sm mb-3">
+                    <div class="form-floating">
+                        <input id="personRow4Name" type="text" class="form-control"  placeholder="{{ 'Full name'|trans }}">
+                        <label for="personRow4Name">{{ 'Full name'|trans }}</label>
+                    </div>
+                    <div class="form-floating">
+                        <input id="personRow4Email" type="email" class="form-control" placeholder="{{ 'Email'|trans }}:" >
+                        <label for="personRow4Email">{{ 'Email'|trans }}</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-4 mt-5">
+            <button type="button" class="btn  btn-primary" onclick="addPerson()">{{ 'Add row'|trans}}</button>
+            <button type="button" class="btn  btn-success" onclick="submitForm()">{{ 'Send emails'|trans}}</button>
+        </div>
+    </div>
+</form>
+
+    <script>
+        var rows = 4;
+        function addPerson () {
+            const container = document.getElementById("personContainer");
+            rows++
+
+            const textForLabel = `{{ 'Recipient'|trans }}`;
+            const textForName = `{{ 'Full name'|trans }}`;
+            const textForEmail = `{{ 'Email'|trans }}`;
+            const textForDelete = `{{'Delete row'|trans}}`;
+
+            let node = document.createElement('div')
+            node.innerHTML = `<div class="row col-12" id="personRow`+rows+`">
+                <label> `+textForLabel+` `+rows+` </label>
+            <div class="input-group mb-3">
+                <div class="form-floating">
+                    <input id="personRow`+rows+`Name" type="text" class="form-control"  placeholder="`+textForName+`">
+                    <label for="personRow`+rows+`Name">`+textForName+`</label>
+                </div>
+                <div class="form-floating">
+                    <input id="personRow`+rows+`Email" type="email" class="form-control" placeholder="`+textForEmail+`:"  >
+                    <label for="personRow`+rows+`Email">`+textForEmail+`</label>
+                </div>
+                <button type="button" class="btn btn-outline-danger" onclick="remove(rows)">`+textForDelete+`</button>
+            </div>
+        </div>`
+
+            container.appendChild(node);
+        }
+
+        function remove(currentRow) {
+            let elem = document.getElementById("personRow"+currentRow+"");
+            elem.remove()
+            rows--;
+        }
+
+        async function submitForm () {
+            let sendData = []
+
+            for( let i = 1; i <= rows; i++) {
+                const email = document.getElementById("personRow"+i+"Email").value;
+                const fullName = document.getElementById("personRow"+i+"Name").value;
+
+                if(email && fullName) {
+                    sendData.push({"fullName" : fullName, "email":email});
+                }
+
+            }
+            if(sendData.length < 4 ) {
+                alert(" {{ 'At least 4 rows must be entered'|trans }}");
+                return;
+            }
+
+            let response = await fetch("/submit",{
+                    method: 'POST',
+                    body: JSON.stringify(sendData)
+            }).then(function (data){
+                if(data.status === 200) {
+                    alert("{{ 'Messages send' |trans}}")
+                }
+            }).catch( function (e) {
+                alert(e.message);
+            })
+        }
+
+    </script>
+{% endblock %}

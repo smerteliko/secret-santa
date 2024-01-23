@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  php-fpm:
+    container_name: php-fpm
+    build:
+      context: ./../
+      dockerfile: ./docker/php-fpm/Dockerfile
+      args:
+        - PUID=${PUID}
+        - PGID=${PGID}
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
+    volumes:
+      - /var/www/vendor/
+      - ./../:/var/www/
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ./nginx
+    ports:
+      - ${NGINX_HOST_HTTP_PORT}:80
+    volumes:
+        - ..:/var/www:rw
+    depends_on:
+        - php-fpm
+
+  mailer:
+    image: axllent/mailpit
+    ports:
+      - "1025"
+      - "8025"
+    environment:
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+
+  database:
+    image: 'postgres:alpine'
+    environment:
+      POSTGRES_PASSWORD: main
+      POSTGRES_USER: main
+      POSTGRES_DB: main
+    ports:
+      # To allow the host machine to access the ports below, modify the lines below.
+      # For example, to allow the host to connect to port 3306 on the container, you would change
+      # "3306" to "3306:3306". Where the first port is exposed to the host and the second is the container port.
+      # See https://docs.docker.com/compose/compose-file/compose-file-v3/#ports for more information.
+      - '5432'
+
+
