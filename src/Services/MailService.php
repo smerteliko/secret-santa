@@ -31,9 +31,9 @@ class MailService {
             ->to($person->getEmail())
             ->subject($this->translator->trans('New years information!'))
             ->text(
-                $this->translator->trans('Hohohooooo ').$person->getFullName().
-                $this->translator->trans(' ! Your happy man ').$givesTo->getFullName().
-                $this->translator->trans(' ! Give him a nice gift and spend all your money. ! '));
+                $this->translator->trans('Hohohooooo !!!').$person->getFullName().PHP_EOL.
+                $this->translator->trans(' Your happy man !').$givesTo->getFullName().PHP_EOL.
+                $this->translator->trans(' Give him a nice gift and spend all your money. ! '));
         $this->mailer->send($email);
 
     }
